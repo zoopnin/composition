@@ -21,7 +21,7 @@ module.exports = {
 		}
 	},
 	test : {
-		db : 'mongodb://faisanaUser1:faisana@ds061298.mongolab.com:61298/db_faisana',
+		db : '',
 		root : rootPath,
 		facebook : {
 			clientID : '',
