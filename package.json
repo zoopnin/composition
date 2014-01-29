@@ -1,0 +1,25 @@
+{
+  "name": "CompositionApp",
+  "version": "0.1.0",
+  "description": "CompositionApp",
+  "scripts": {
+	  "start": "node app"
+  },
+  "dependencies":{
+	"express":"3.3.4",
+	"express3-handlebars":"~0.5.0",
+	"aws-sdk":"2.0.0-rc3",
+	"hbs":"2.4.0",
+	"dynamoDB":"0.1.4",
+	"winston":"0.7.2",
+	"mongoose":"3.8.3"
+  },
+  "repository": "",
+  "keywords": [
+    "Api",
+    "Composition"
+  ],
+  "author": "Ning",
+  "license": "BSD",
+  "readmeFilename": "README.md"
+}

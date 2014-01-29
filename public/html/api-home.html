@@ -1,0 +1,689 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Composition</title>
+<link href="css/api-global.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/jquery-1.7.2.min.js" ></script>
+<script type="text/javascript" src="js/jquery-ui.js" ></script>
+<script type="text/javascript" src="js/alsoResizeReverse.js" ></script>
+<script type="text/javascript" src="js/handlebars-v1.1.2.js" ></script>
+<!-- Add the script to the HEAD of your document -->
+<SCRIPT LANGUAGE="JavaScript">
+<!-- Begin
+var scrl = " Composition ";
+function scrlsts() {
+ scrl = scrl.substring(1, scrl.length) + scrl.substring(0, 1);
+ //console.log(scrl);
+ document.title = scrl;
+ setTimeout("scrlsts()", 300);
+ }
+//  End -->
+</script>
+<!-- Add the event loader to the body tag as below -->
+<script>
+  $(function(){
+	
+	$(".add_icon").click(function(){
+		$(".add_api").fadeIn();
+    });
+	$(".flat .line:first-child").dblclick(function(){
+		$(".add_api").fadeIn();
+    });
+	$("#app_plus").click(function(){
+		$(".add_col").fadeIn();
+    });
+	$(".user_icon").click(function(){
+		$(".user_field").fadeIn();
+    });
+	$(".help_icon").click(function(){
+		$(".help_field").fadeIn();
+    });
+	$(".ok_btn, .cancel_btn").click(function(){
+		$(".add_field").fadeOut();
+    });
+	
+	$(".line .arrow_span, .row_main .arrow_span").toggle(function(){
+		$(this).children("i").addClass("downlist");
+		$(this).parent(".arrow_head").siblings(".arrow_body").removeClass("no_height");
+    },function(){
+		$(this).children("i").removeClass("downlist");
+		$(this).parent(".arrow_head").siblings(".arrow_body").addClass("no_height");
+	});
+	
+	$(".par_title .arrow_span").click(function(){
+		var asc = $(this).children("i");
+		var ch = $(this).parent(".arrow_head").siblings(".arrow_body");
+		if(ch.hasClass("no_height")){
+			$(".par_box .arrow_body").addClass("no_height");
+			$(".par_title .arrow_span i").removeClass("downlist");
+			asc.addClass("downlist");
+			ch.removeClass("no_height");
+		}else {
+		    asc.removeClass("downlist");
+			ch.addClass("no_height");
+		}
+	});
+	
+	$(".line").click(function(){
+		var _this = $(this) ;
+		if(_this.hasClass('selected')){
+			_this.removeClass('selected');
+		}else{
+			_this.siblings(_this).removeClass('selected');
+			_this.addClass('selected');
+		}	 
+		 
+	 });
+	 
+	 $(".down_icon").toggle(function(){
+		 $(this).parent(".sd_title").siblings(".sd_content").show();
+	 },function(){
+		 $(this).parent(".sd_title").siblings(".sd_content").hide();
+	 });
+	 
+	 $(".save_icon").click(function(){
+		$(".save_action").addClass("save_working");
+		$(".save_action").append('<div class="save_progress" />');
+		setTimeout(removeSC, 3000);
+	 });
+	 
+	 $(".jl_et").dblclick(function(){
+		  var text = $(this).text();
+          $(this).text('');
+          $('<input />').attr('class','append_input').appendTo($(this)).val(text).select().blur(
+              function(){
+                  var newText = $(this).val();
+                  $(this).parent().text(newText).find('textarea').remove();
+              });
+	  });
+	  
+	  $(".json_list").sortable({
+		  items: "li:not(.jl_title, .jl_foot)"
+	  });
+      $(".json_list").disableSelection();
+	  $(".json_list").bind('click.sortable mousedown.sortable',function(ev){
+        ev.target.focus();
+      });
+	  
+	  
+	  var lmw = $(window).width();
+	  $( ".left_part" ).resizable({
+		  alsoResizeReverse: ".middle_part",
+		  handles: "e",
+		  maxWidth: 0.44*lmw,
+		  minWidth: 170
+	  });
+	  $( ".right_part" ).resizable({
+		  alsoResizeReverse: ".middle_part",
+		  handles: "w",
+		  maxWidth: 0.44*lmw,
+		  minWidth: 170
+	  });
+	  $( ".explorer" ).resizable({
+		  alsoResizeReverse: ".console, .console_content",
+		  handles: "s"
+	  });
+	  $( ".graph" ).resizable({
+		  alsoResizeReverse: ".library",
+		  handles: "s"
+	  });
+	  
+	 
+	 scrollHeight();
+	 $(window).on("resize",scrollHeight);
+	 
+	 heightControl();
+	 $(window).on("resize",function(event){
+	     if (!$(event.target).hasClass('ui-resizable')) {
+			 heightControl();
+			 widthControl();
+		 }
+	 }); 
+	 
+	 
+	 $(".color_field span").click(function(){
+		 if($(this).hasClass("unselected")){
+			 $(".color_field span").removeClass("selected");
+			 $(this).removeClass("unselected").addClass("selected");
+			 $(this).siblings("span").addClass("unselected");
+		 }else {
+			 $(this).addClass("selected");
+		     $(this).siblings("span").addClass("unselected");
+		 }
+		 
+		 var textColor = $(this).attr("data-color");
+		 $(".console_content p").css("color", textColor);
+	 });
+	 
+	 $("#cl").click(function(){
+		var _this  = $(this);
+		var _color = $(".color_field") ; 
+		if(_this.is(":checked")){
+			_color.show();
+		}else{
+			_color.hide();
+		} 
+		 
+	 });
+	 
+	 
+	 $(".add_col h1 span").click(function(){
+		 var addType = $(this).attr("add-type");
+		 $(".add_col h1 span").removeClass("add_type_selected");
+		 $(this).addClass("add_type_selected");
+		 $(".add_col .row_div label").text(addType);
+	 });
+	 
+	  new CalculateZoom().initZoom();
+	 
+	 $(".scale_field span").click(function(){
+		 var scalenum = $(".scale_text").attr("data-scale");
+		 //console.log(scalenum);
+		 $(".gra_ele").css({
+			 'width' : 100*scalenum,
+			 'height' : 90*scalenum
+		 });
+		 
+		 $(".gra_ele_inside").css({
+			 '-webkit-transform' : 'scale(' + scalenum + ')',
+			 '-moz-transform' : 'scale(' + scalenum + ')',
+			 '-ms-transform' : 'scale(' + scalenum + ')',
+			 '-o-transform' : 'scale(' + scalenum + ')',
+			 'transform' : 'scale(' + scalenum + ')'
+		 });
+	 });
+	
+	
+	 var template = Handlebars.compile($("#oa-template").html());
+	 var data = {
+		 library: [
+		     { id: "a", tool_name: "Create" },{ id: "b", tool_name: "Read" },{ id: "c", tool_name: "Update" },{ id: "d", tool_name: "Delete" },{ id: "e", tool_name: "List" },{ id: "f", tool_name: "Table" },{ id: "g", tool_name: "Connection" },{ id: "h", tool_name: "Fields" },{ id: "i", tool_name: "Date/Time" },{ id: "j", tool_name: "Validate" },{ id: "k", tool_name: "Search" },{ id: "l", tool_name: "Console" },{ id: "m", tool_name: "GUID" },{ id: "n", tool_name: "Static" },{ id: "o", tool_name: "Test Data" },{ id: "p", tool_name: "Split" },{ id: "q", tool_name: "Join" },{ id: "r", tool_name: "Encrypt" },{ id: "s", tool_name: "Email" },{ id: "t", tool_name: "SMS" },{ id: "u", tool_name: "Resize" },{ id: "v", tool_name: "Compress" },{ id: "w", tool_name: "Maths" },{ id: "x", tool_name: "File System" }
+		 ]
+	 }
+	 
+	 $(".oa_tools").html(template(data));
+	 
+	 
+
+
+	 $(".help_field").draggable({ handle: "h1", containment: "body" });
+	 
+	 $(".hc_title_list li").mouseenter(function(){
+		 $(".hc_title_list li").removeClass("li_hover");
+		 $(this).addClass("li_hover");
+	 });
+	 
+	 $(".user_field h1 span").click(function(){
+		 $(".user_field h1 span").removeClass("add_type_selected");
+		 $(this).addClass("add_type_selected");
+		 $(".user_field .add_content").hide();
+		 if($(this).hasClass("account_span")){
+			 $(".account_content").show();
+		 }else {
+			 $(".bill_content").show();
+		 }
+	 });
+	  
+	
+	  
+	  
+	 
+	 
+	 
+	 
+	 var el = $(".oa_tools li");
+	 var sf = $(".gra_content");
+	 el.attr('draggable', 'true');
+	 addEvent(el, 'dragstart', function (e) {
+		this.style.opacity = '0.4';
+		e.dataTransfer.effectAllowed = 'copy';
+        e.dataTransfer.setData('text/plain', this.id);
+     });
+	 addEvent(sf, 'dragover', function (e) {
+        if (e.preventDefault) e.preventDefault(); // Necessary. Allows us to drop.
+		e.dataTransfer.dropEffect = 'copy';
+        return false;
+     });
+	 addEvent(sf, 'drop', function (e) {
+		if (e.stopPropagation) e.stopPropagation();// stops the browser from redirecting.
+		if (e.preventDefault) e.preventDefault();
+		var num = e.dataTransfer.getData('text/plain', this.id);
+		//console.log(num);
+		
+		var drx = e.pageX;
+		var sfx = $(this).offset().left;
+		var dry = e.pageY;
+		var sfy = $(this).offset().top;
+		var currentScale = $(".scale_text").attr("data-scale");
+		//$(this).text("( " + (drx-sfx) + ", " + (dry-sfy) + " )");
+		
+		if(num == "a"){
+			$(this).append('<div class="gra_ele" style="top:'+(dry-sfy)+'px;left:'+(drx-sfx)+'px;width:'+(100*currentScale)+'px;height:'+(90*currentScale)+'px;"><div class="gra_ele_inside" style="-moz-transform:scale('+ currentScale +');-webkit-transform:scale('+ currentScale +');-ms-transform:scale('+ currentScale +');-o-transform:scale('+ currentScale +');transform:scale('+ currentScale +');"><span class="gel"><strong>Name<i></i></strong></span><span class="ger"><strong>Date<i></i></strong></span></div></div>');
+		}else {
+			$(this).append('<div class="gra_ele" style="top:'+(dry-sfy)+'px;left:'+(drx-sfx)+'px;width:'+(100*currentScale)+'px;height:'+(90*currentScale)+'px"><div class="gra_ele_inside" style="-moz-transform:scale('+ currentScale +');-webkit-transform:scale('+ currentScale +');-ms-transform:scale('+ currentScale +');-o-transform:scale('+ currentScale +');transform:scale('+ currentScale +');"><span class="gel"><strong>Name<i></i></strong></span></div></div>');
+		}
+        return false;
+     });
+	 addEvent(el, 'dragend', function(){
+		this.style.opacity = "1";
+	 });
+	 
+	 
+	 $(".gra_content").delegate(".gra_ele", "mouseenter", function(){
+		 $(".gra_ele").draggable({ containment: "parent" });
+	 });
+	 
+	 $(".gra_content").mousemove(function(e){
+		 var px = e.pageX;
+		 var pxx = $(this).offset().left;
+		 var py = e.pageY;
+		 var pyy = $(this).offset().top;
+		 //$(this).text("( " + (px-pxx) + ", " + (py-pyy) + " )");
+	 });
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+  });
+  
+   var CalculateZoom = function(){
+		 
+		 var _this = this ;
+		 var _default = $(".scale_text") ;
+		 
+		 
+		 this.reduce = function(scale){
+			 scale = parseFloat(scale);
+			 if(scale > 0.2){
+				 scale -= 0.2 ;
+			 }else{
+				scale = 0.2 ;	 
+			 }
+			 return scale.toFixed(2) ;
+		  },
+		  
+		  this.plus = function(scale){
+			  scale = parseFloat(scale);
+			  
+		  	  if(scale < 2.0){
+				scale += 0.2 ;  
+			  }else{
+				scale = 2 ;  
+			  }
+			  return scale.toFixed(2) ;
+		  },
+		  this.initZoom = function(){
+			
+			$(".scale_plus").click(function(){
+				var _defaultScale = _default.attr("data-scale");
+				var _type = $(this).attr("data-type");
+				var newScale = _this.plus(_defaultScale);
+				_default.attr("data-scale",newScale);
+				_default.text(newScale * 100 + "%");
+				
+				
+			});  
+			
+			$(".scale_reduce").click(function(){
+				var _defaultScale = _default.attr("data-scale");
+				var _type = $(this).attr("data-type");
+				var newScale = _this.reduce(_defaultScale);
+				_default.attr("data-scale",newScale);
+				_default.text(newScale * 100 + "%");
+				
+			});
+		  }
+			
+	 
+	 };
+  
+  function removeSC() {
+	  $(".save_action").removeClass("save_working");
+	  $(".save_progress").remove();
+  }
+  function heightControl(){
+	  var windowHeight = $(window).height() - 25;
+	  $(".explorer").css("height", windowHeight*0.5);
+	  $(".console").css("height", windowHeight*0.5);
+	  $(".console_content").css("height", windowHeight*0.5 - 41);
+	  $(".graph").css("height", windowHeight*0.6);
+	  $(".library").css("height", windowHeight*0.4 - 20);
+	  $(".parameters").css("height", windowHeight);
+	  $(".middle_part").css("height",windowHeight);
+  }
+  function widthControl(){
+	  var windowWidth = $(window).width();
+	  $(".left_part").css("width", windowWidth*0.25);
+	  $(".middle_part").css("width", windowWidth*0.5);
+	  $(".right_part").css("width", windowWidth*0.25);
+	  $(".right_part").css("left", windowWidth*0.75);
+  }
+  function scrollHeight() {
+	  var windowHeight = $(window).height() - 25;
+	  var pbNum = $(".parameters .par_box").length;
+	  var scHeight = windowHeight - (pbNum + 1)*21 - 20;
+	  $(".scroll_ul_height").css("height", scHeight);
+  } 
+  
+  var addEvent = (function () {
+  if (document.addEventListener) {
+    return function (el, type, fn) {
+      if (el && el.nodeName || el === window) {
+        el.addEventListener(type, fn, false);
+      } else if (el && el.length) {
+        for (var i = 0; i < el.length; i++) {
+          addEvent(el[i], type, fn);
+        }
+      }
+    };
+  } else {
+    return function (el, type, fn) {
+      if (el && el.nodeName || el === window) {
+        el.attachEvent('on' + type, function () { return fn.call(el, window.event); });
+      } else if (el && el.length) {
+        for (var i = 0; i < el.length; i++) {
+          addEvent(el[i], type, fn);
+        }
+      }
+    };
+  }
+})();
+</script>
+</head>
+
+<body onLoad="scrlsts()">
+<div class="save_action">
+  <p class="save_text">Application Saving</p>
+</div>
+<div class="add_api add_field">
+  <h1>New Application</h1>
+  <div class="add_content">
+    <div class="insert_area">
+      <div class="row_div"><label>Application Name:</label><input type="text"></div>
+      <div class="row_div"><label>API Key:</label><input type="text"></div>
+    </div>
+    <div class="btn_area">
+      <div class="ok_btn grey_btn">OK</div>
+      <div class="cancel_btn grey_btn">Cancel</div>
+      <div class="grey_btn">Reset</div>
+    </div>
+  </div>
+</div>
+<div class="add_col add_field">
+  <h1>
+    <span class="add_col_span add_type_selected" add-type="Collection Name:">Add Collection</span>
+    <span class="add_ass_span" add-type="Assembly Name:">Add Assembly</span>
+  </h1>
+  <div class="add_content">
+    <div class="insert_area">
+      <div class="row_div"><label>Collection Name:</label><input type="text"></div>
+    </div>
+    <div class="btn_area">
+      <div class="ok_btn grey_btn">OK</div>
+      <div class="cancel_btn grey_btn">Cancel</div>
+      <div class="grey_btn">Reset</div>
+    </div>
+  </div>
+</div>
+<div class="user_field add_field">
+  <h1>
+    <span class="account_span add_type_selected">Account</span>
+    <span class="bill_span">Billing</span>
+  </h1>
+  <div class="add_content account_content">
+    <div class="insert_area">
+      <div class="row_div"><label>Username:</label><input type="text" value="#username"></div>
+      <div class="row_div"><label>Email:</label><input type="email" value="xxx@xxx.com"></div>
+      <div class="row_div"><label>Password:</label><input type="Password" value="******"></div>
+      <div class="row_div"><label>Confirm Password:</label><input type="Password"></div>
+    </div>
+    <div class="btn_area" style="height:106px;">
+      <div class="ok_btn grey_btn">OK</div>
+      <div class="cancel_btn grey_btn">Cancel</div>
+      <div class="grey_btn">Reset</div>
+    </div>
+  </div>
+  <div class="add_content bill_content" style="display:none;">
+    <div class="insert_area">
+      <div class="row_div"><label>Amount Due:</label><span class="ad_num">$ 200.99</span></div>
+      <div class="row_div"><label>Name on Card:</label><input type="text"></div>
+      <div class="row_div"><label>Card Number:</label><input type="text"></div>
+      <div class="row_div"><label>Expiry Date:</label><input type="text"></div>
+      <div class="row_div"><label>Card Type:</label><div class="select_field">- - Card Type - -<span class="icons-1 down_icon"></span></div></div>
+      <div class="row_div"><label>Cvv Code:</label><input type="text"></div>
+      <div class="row_div"><label>Address:</label><input type="text"></div>
+      <div class="row_div"><label>City:</label><input type="text"></div>
+      <div class="row_div"><label>Postal / Zip:</label><input type="text"></div>
+    </div>
+    <div class="btn_area" style="height:243px;">
+      <div class="ok_btn grey_btn">Pay Now</div>
+      <div class="cancel_btn grey_btn">Cancel</div>
+      <div class="grey_btn">Reset</div>
+    </div>
+  </div>
+</div>
+<div class="help_field add_field">
+  <h1>Help</h1>
+  <div class="help_content clear">
+    <ul class="hc_title_list">
+      <li class="li_hover">Explorer Demo</li>
+      <li>Console Demo</li>
+      <li>Library Demo</li>
+    </ul>
+    <div class="hc_content_outside">
+      <ul class="hc_content_inside">
+        
+      </ul>
+    </div>
+    <div class="cancel_btn grey_btn">Cancel</div>
+  </div>
+</div>
+  <div class="header">
+    <span class="add_icon icons-1"></span>
+    <span class="save_icon icons-1"></span>
+    <span class="help_icon icons-1"></span>
+    <span class="user_icon icons-1"></span>
+  </div>
+  <div class="container clear">
+    <div class="left_part">
+      <div class="content_div">
+        <div class="explorer">
+          <h1 class="box_title">Explorer</h1>
+          <div class="flat">
+            <div class="line arrow_head">
+              <span class="arrow_span"><i class="icons-1"></i></span>
+              <span class="tree_span"><i class="icons-1"></i></span>
+              <span class="text_span">Demo Application</span>
+              <span class="plus_span icons-1" id="app_plus"></span>
+            </div>
+            <div class="line arrow_body point no_height">Unsaved Collection*<span class="trash_span icons-1"></span></div>
+            <div class="line arrow_body point no_height">Unsaved Assembly*<span class="trash_span icons-1"></span></div>
+          </div>
+        </div>
+        <div class="console">
+          <h1 class="box_title">Console</h1>
+          <div class="console_content">
+            <p>test text</p>
+          </div>
+        </div>
+      </div>
+      <div class="drag_div"></div>
+    </div>
+    <div class="middle_part">
+      <div class="graph">
+        <h1 class="box_title">Graph</h1>
+        <div class="gra_content">
+          <div class="scale_field">
+            <span class="scale_plus" data-type="plus">+</span>
+            <span class="scale_text" data-scale="1.0">100%</span>
+            <span class="scale_reduce" data-type="reduce">-</span>
+          </div>
+        </div>
+      </div>
+      <div class="library">
+        <h1 class="box_title">Library</h1>
+        <div class="lib_menu">
+          <div class="lib_row">
+            <div class="row_main">
+              <span class="star_span"><i class="icons-1"></i></span>
+              <span class="text_span">Favorites</span>
+            </div>
+          </div>
+          <div class="lib_row">
+            <div class="row_main arrow_head">
+              <span class="arrow_span"><i class="icons-1"></i></span>
+              <span class="text_span">OAuth</span>
+            </div>
+            <div class="row_sub arrow_body no_height">
+              <span class="fb_span"><i class="icons-1"></i></span>
+              <span class="text_span">Facebook</span>
+            </div>
+            <div class="row_sub arrow_body no_height">
+              <span class="fb_span"><i class="icons-1"></i></span>
+              <span class="text_span">Twitter</span>
+            </div>
+          </div>
+          <div class="lib_row">
+            <div class="row_main arrow_head">
+              <span class="arrow_span"><i class="icons-1"></i></span>
+              <span class="text_span">CRUDL</span>
+            </div>
+          </div>
+          <div class="lib_row">
+            <div class="row_main arrow_head">
+              <span class="arrow_span"><i class="icons-1"></i></span>
+              <span class="text_span">Filters</span>
+            </div>
+          </div>
+          <div class="lib_row">
+            <div class="row_main arrow_head">
+              <span class="arrow_span"><i class="icons-1"></i></span>
+              <span class="text_span">Static</span>
+            </div>
+          </div>
+        </div>
+        <div class="lib_content">
+          <ul class="oa_tools clear">
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="right_part">
+      <div class="drag_div"></div>
+      <div class="parameters">
+        <h1 class="box_title">Parameters</h1>
+        <div class="par_box">
+          <div class="par_title arrow_head"><span class="arrow_span"><i class="icons-1"></i></span><span class="text_span">Base Parameters</span></div>
+          <div class="par_content arrow_body no_height for_bp">
+            <div class="li_tag">
+              <label>Name</label>
+              <input type="text">
+            </div>
+            <div class="li_tag">
+              <label>URI</label>
+              <input type="text">
+            </div>
+            <div class="li_tag">
+              <label>Description</label>
+              <textarea></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="par_box">
+          <div class="par_title arrow_head"><span class="arrow_span"><i class="icons-1"></i></span><span class="text_span">Authentication</span></div>
+          <div class="par_content arrow_body no_height"></div>
+        </div>
+        <div class="par_box">
+          <div class="par_title arrow_head"><span class="arrow_span"><i class="icons-1"></i></span><span class="text_span">Arguments</span><span class="plus_span icons-1"></span></div>
+          <div class="par_content arrow_body no_height for_ar">
+            <input class="name_input" type="text" placeholder="Name">
+            <div class="select_div">
+              <div class="sd_title">Type<span class="icons-1 down_icon"></span></div>
+              <ul class="sd_content">
+                <li>xxx</li>
+                <li>xxx</li>
+                <li>xxx</li>
+              </ul>
+            </div>
+            <div class="select_div">
+              <div class="sd_title">Optional<span class="icons-1 down_icon"></span></div>
+              <ul class="sd_content">
+                <li>xxx</li>
+                <li>xxx</li>
+                <li>xxx</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="par_box">
+          <div class="par_title arrow_head"><span class="arrow_span"><i class="icons-1"></i></span><span class="text_span">Commit</span></div>
+          <div class="par_content arrow_body no_height for_com">
+            <div class="select_div">
+              <div class="sd_title">Type<span class="icons-1 down_icon"></span></div>
+              <ul class="sd_content">
+                <li>xxx</li>
+                <li>xxx</li>
+                <li>xxx</li>
+              </ul>
+            </div>
+            <div class="cl_check">
+              <input type="checkbox" id="cl"><label for="cl">Console Log</label>
+            </div>
+            <div class="color_field">
+              <span data-color="#F92770" class="pink"></span>
+              <span data-color="#FD9720" class="orange"></span>
+              <span data-color="#E6DB74" class="yellow"></span>
+              <span data-color="#62D9EF" class="blue"></span>
+              <span data-color="#AE81FF" class="purple"></span>
+              <span data-color="#A6E22D" class="green"></span>
+              <span data-color="#75715E" class="gold"></span>
+              <span data-color="#F8F8F2" class="white"></span>
+            </div>
+          </div>
+        </div>
+        <div class="par_box">
+          <div class="par_title arrow_head"><span class="arrow_span"><i class="icons-1"></i></span><span class="text_span">Json</span></div>
+          <div class="par_content arrow_body no_height scroll_ul_height">
+            <ul class="json_list">
+              <li class="jl_title">User</li>
+              <li class="jl_part" style="padding-left:20px;">
+                <span class="jl_et">Name</span>
+              </li>
+              <li class="jl_part" style="padding-left:40px;">
+                <span class="jl_et">xxxxxxx</span>
+              </li>
+              <li class="jl_part" style="padding-left:20px;">
+                <span class="jl_et">Age</span>
+              </li>
+              <li class="jl_part" style="padding-left:40px;">
+                <span class="jl_et">20</span>
+              </li>
+              <li class="jl_foot">
+                <input type="text" placeholder="Add New">
+                <span class="jl_add icons-1"></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"></div>
+</body>
+<script id="oa-template" type="text/x-handlebars-template">
+  {{#library}}
+    <li id="{{id}}">
+      <span class="tool_span"><i class="icons-1"></i></span>
+      <span class="text_span">{{tool_name}}</span>
+    </li>
+  {{/library}}
+</script>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>api-login</title>
+<link href="css/api-global.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/jquery-1.7.2.min.js" ></script>
+<script>
+  $(function(){
+	  //login_field和fw_field切换--start--
+	  $(".fw_text").click(function(){
+		  $(".login_field").addClass("scale_ani");
+		  $(".fw_field").removeClass("scale_ani");
+		  $(".change_field").hide();
+	  });
+	  //--end--
+	  
+	  $(".nm_text").click(function(){
+		  $(".fw_field").addClass("scale_ani");
+		  $(".login_field").removeClass("scale_ani");
+		  setTimeout('$(".change_field").show()',500);
+	  });
+	  
+	  //login_field和signup_field切换--start--
+	  $(".change_field").click(function(){
+		  if($(".signup_field").hasClass("slider_ani")){
+			  $(".signup_field").removeClass("slider_ani");
+			  $(this).text("Sign Up");
+			  $(".login_field").removeClass("scale_ani");
+		  }else{
+			  $(".signup_field").addClass("slider_ani");
+			  $(this).text("Sign In");
+			  $(".login_field").addClass("scale_ani");
+		  }
+		  
+	  });
+	  //--end--
+	  
+	  //错误提示效果--start--
+	  $(".ok_btn").click(function(){
+	    $('.add_field').animate({
+	      left: '-=10'},100,function(){
+	      $(this).animate({
+	      left: '+=20'},100,function(){
+	      $(this).animate({
+	      left: '-=15'},100,function(){
+	      $(this).animate({
+	      left: '+=10'},100,function(){
+	      $(this).animate({	
+	      left: '-=5'},100);
+	    });
+	    });
+	    });	
+	    });	
+      });
+	  //--end--
+	  
+	  //滚动条效果--start--
+	  $(document).ready(function () {
+         window.scrollTo(0,760);
+      });
+	  
+	  $(".scroll_to_log").click(function(){
+		 $("body,html").animate({
+				scrollTop: 0
+		 }, 500);
+		 
+		 return false; 
+	  });
+	  //--end--
+  });
+</script>
+</head>
+
+<body style="overflow-x:hidden;">
+  <div class="log_section">
+    <a class="logo_link" href="##"><img src="images/Logo.png" alt="logo"></a>
+    <span class="change_field">Sign In</span>
+    <div class="login_field add_field scale_ani">
+      <h1>Sign In</h1>
+      <p class="alert_text">Reminder sent. Check your email momentarily.</p>
+      <div class="add_content">
+        <div class="insert_area">
+          <div class="row_div"><label>Username:</label><input type="text"></div>
+          <div class="row_div"><label>Password:</label><input type="password"></div>
+          <div class="row_div"><span class="fw_text">Forgot Password ?</span></div>
+        </div>
+        <div class="btn_area" style="height:75px;">
+          <div class="ok_btn grey_btn">OK</div>
+          <div class="grey_btn">Reset</div>
+        </div>
+      </div>
+    </div>
+    <div class="signup_field add_field slider_ani">
+      <h1>Sign up to be considered for our private beta</h1>
+      <p class="alert_text">xxxxxxx</p>
+      <div class="add_content">
+        <div class="insert_area">
+          <div class="row_div"><label>Name:</label><input type="text"></div>
+          <div class="row_div"><label>Email:</label><input type="email"></div>
+          <div class="row_div"><label>Website:</label><input type="text"></div>
+          <div class="row_div"><label>Country:</label><input type="text"></div>
+        </div>
+        <div class="btn_area" style="height:106px;">
+          <div class="ok_btn grey_btn">OK</div>
+          <div class="grey_btn">Reset</div>
+        </div>
+      </div>
+    </div>
+    <div class="fw_field add_field scale_ani">
+      <h1>Forgot Password</h1>
+      <p class="alert_text">xxxxxxx</p>
+      <div class="add_content">
+        <div class="insert_area">
+          <div class="row_div"><label>Email:</label><input type="email"></div>
+          <div class="row_div"><span class="nm_text">Oops! I just remembered.</span></div>
+        </div>
+        <div class="btn_area">
+          <div class="ok_btn grey_btn">OK</div>
+          <div class="grey_btn">Reset</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="main_section">
+    <a class="logo_link" href="##"><img src="images/Logo.png" alt="logo"></a>
+    <span class="scroll_to_log">Sign Up Now</span>
+    <p class="main_section_text">The Visual Application Layer<br>We've got your back!</p>
+  </div>
+  <div class="join_section">
+    <div class="join_field">
+      <h1>Join the team</h1>
+      <p>We're building the visual application layer, its an important, significant and worthwhile challenge. We want to work with people who aren't afraid of taking on the hardest problems. If your that kind of  rock-star hacker enter your email below to learn more about us and the positions that are open right now.</p>
+      <div class="join_email">
+        <input type="email" placeholder="Email">
+        <div class="grey_btn">Submit</div>
+      </div>
+    </div>
+  </div>
+  <div class="about_section">
+    <div class="about_field">
+      <h1>The problem at hand...</h1>
+      <p>As programmers we find ourselves spending weeks and sometimes months writing web applications which under the hood, essentially all do the same thing and we've had enough, we cant take it anymore! <br>
+      <em>&quot;Save this or get that from the database, put this or get that from the file system, send that email if this happens, resize this image, convert that video. click this do that.&quot;</em> <br>
+      Grrrr, no more we say! <em><br>
+      &quot;Give me an API end point for this&quot;</em> <br>
+      No more, seriously!</p>
+      <p>We're building you   non technical founders, architects and front end developers an intuitive, web based, visual scripting system so you can build even the most intricate of web apps quickly and without any programming. Connect together objects in virtually limitless combinations to assemble world class web apps  yourselvs.</p>
+      <p>Yes, yes, it's going to scale infinitely and yes its going to be hosted on AWS, and no it wont be impossible to figure out or be expensive to get started.</p>
+      <p>You just need to drag and drop objects, wire them up with connections. Groups of connected objects can then be wrapped into a single object and again wired up to further objects, as a non programmer its stupidly powerful and empowering.</p>
+      <p>Front end designers, don't panic we still need you to make it look all pretty, we're not touching the presentation layer, <br>
+        We will  give you  working HTML and JavaScript, you still get to to style it up and do all your fancy design bits, it's still all on you, to make it look cool.<br>
+        <br>
+        <em>&quot;but It wont be able to do this! or that! No way!&quot;</em> <br>
+        Listen 
+        if you really want to do some weird stuff, you can! give us a call or find a programmer to build you a custom object, then you can load it in re-use it over and over again and wire it up with your existing objects.<br>
+        <br>
+      Too excited and can't wait for launch? Sign up for the private beta above to get building first.</p>
+    </div>
+  </div>
+</body>
+</html>
